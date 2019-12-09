@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb://localhost:27017/mern-stack-social-network"
+    "mongoURI": "mongodb://localhost:27017/mern-stack-social-network",
+    "UserRegister_Success": 1
 }
