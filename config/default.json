@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb://localhost:27017/mern-stack-social-network",
-    "UserRegister_Success": 1
+    "UserRegister_Success": 1,
+    "jwtSecret": "mysecret",
+    "Login_Success": 1
 }
