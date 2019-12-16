@@ -2,5 +2,7 @@
     "mongoURI": "mongodb://localhost:27017/mern-stack-social-network",
     "UserRegister_Success": 1,
     "jwtSecret": "mysecret",
-    "Login_Success": 1
+    "Login_Success": 1,
+    "githubClientId": "e18ad3ba7ac272f9d425",
+    "githubClientSecret": "3f1670a8b83699a0748d31044a8957a7708e3dcc"
 }
