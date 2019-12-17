@@ -83,4 +83,108 @@ router.post('/', [AuthMid, [
         res.status(500).send('Server Error');
     }
 });
+
+// @route    PUT api/posts/like/:id
+// @desc     Add Like Post
+// @access   private
+
+router.put('/like/:id', AuthMid, async (req, res) => {
+    try{
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(400).send('Post is no longer exist');
+        if (post.likes.filter(like => like.user.toString() === req.user.id).length > 0){
+            return res.status(400).send('Post is liked by this user');
+        }
+        post.likes.unshift({user: req.user.id});
+        await post.save();
+        return res.json(post);
+    } catch(err) {
+        if (err.kind == 'ObjectId') {
+            return res.status(400).send('Post is no longer exist');
+        }
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route    PUT api/posts/unlike/:id
+// @desc     UnLike Post
+// @access   private
+router.put('/unlike/:id', AuthMid, async (req, res) => {
+    try{
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(400).send('Post is no longer exist');
+        if (post.likes.length < 1){
+            return res.status(400).send('Post is no like');
+        }
+        const unlikeIndex = post.likes.map(like => like.user).indexOf(req.user.id);
+        if (unlikeIndex >= 0) {
+            post.likes.splice(unlikeIndex, 1);
+            await post.save();
+            return res.json(post);    
+        } else {
+            return res.status(400).send('This user is not like this post ');
+        }
+        
+    } catch(err) {
+        if (err.kind == 'ObjectId') {
+            return res.status(400).send('Post is no longer exist');
+        }
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route    PUT api/posts/comment/:id
+// @desc     Add Comment to Post
+// @access   private
+
+router.put('/comment/:id', [AuthMid, [
+    check('text', 'Text is required').not().isEmpty()
+]], async (req, res) => {
+    try{
+        const errors = validationResult(req);
+        if (!errors.isEmpty()){
+            return res.status(400).json({error: errors.array()});
+        }
+        const post = await Post.findById(req.params.id);
+        const user = User.findById(req.user.id).select('-password');
+        if(!user) return res.status(400).send('User is no longer exist');
+        if (!post) return res.status(400).send('Post is no longer exist');
+        const newComment = {
+            user: req.user.id,
+            text: req.body.text,
+            name: user.name,
+            avatar: user.avatar
+        };
+        post.comments.unshift(newComment);
+        await post.save();
+        return res.json(post);
+    } catch(err) {
+        if (err.kind == 'ObjectId') {
+            return res.status(400).send('Post is no longer exist');
+        }
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// @route    PUT api/posts/comment/:id/:comment_id
+// @desc     remove comment
+// @access   private
+router.delete('/comment/:id/:comment_id', AuthMid, async (req, res) => {
+    try{
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(400).send('Post is no longer exist');
+        if (post.comments.length < 1) return res.status(400).send('Post is no any comment');
+        const indexComment = post.comments.map(comment => comment.id).indexOf(req.params.comment_id);
+        await post.comments.splice(indexComment, 1);
+        await post.save();
+        res.json(post);
+    }catch(err){
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;
