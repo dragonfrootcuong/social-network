@@ -2,7 +2,8 @@ import React, {Fragment, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {setAlert} from '../../actions/alert';
-const Register = ({setAlert}) => {
+import {register} from '../../actions/auth';
+const Register = ({setAlert, register}) => {
     const [formData, setFormData] = useState(
         {
             name: '',
@@ -21,7 +22,7 @@ const Register = ({setAlert}) => {
         if (formData.password !== formData.password2) {
           setAlert('Password confirm is not match', 'danger', 3000);
         } else {
-          console.log(formData);
+          register({name, email, password});
         }
     }
     return (
@@ -31,7 +32,7 @@ const Register = ({setAlert}) => {
         <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
         <form className="form" onSubmit={e => onSubmit(e)}>
           <div className="form-group">
-            <input type="text" placeholder="Name" name="name" value={name} onChange={e => onChange(e)} required />
+            <input type="text" placeholder="Name" name="name" value={name} onChange={e => onChange(e)}  required/>
           </div>
           <div className="form-group">
             <input type="email" placeholder="Email Address" value={email} onChange={e => onChange(e)} name="email" required/>
@@ -68,4 +69,4 @@ const Register = ({setAlert}) => {
     )
 }
 
-export default connect(null, {setAlert})(Register);
+export default connect(null, {setAlert, register})(Register);

@@ -57,7 +57,7 @@ router.post('/',[
                 if (err) {
                     throw err;
                 }
-                return res.json({status: config.get('Login_Success'), message: "Logined", token: token})
+                return res.json({token: token})
                 
              })
          
