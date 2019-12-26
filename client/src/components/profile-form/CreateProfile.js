@@ -43,7 +43,7 @@ const CreateProfile = ({auth, profile: {profile, loading}, getCurrentProfile, cr
     return profile ? (<Redirect to='/dashboard' />) : (
         <Fragment>
             <section className="container">
-                <h1 class="large text-primary">
+                <h1 className="large text-primary">
                     Create Your Profile
                 </h1>
                 <p className="lead">

@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import {getCurrentProfile, createProfile} from '../../actions/profile';
-import { Redirect, withRouter} from 'react-router-dom';
+import { Redirect, withRouter, Link} from 'react-router-dom';
 
 
 const EditProfile = ({auth, profile: {profile, loading}, getCurrentProfile, createProfile, history}) => {
@@ -160,7 +160,7 @@ const EditProfile = ({auth, profile: {profile, loading}, getCurrentProfile, crea
                     </Fragment>
                     )}
                     <input type="submit" className="btn btn-primary my-1" />
-                    <a className="btn btn-light my-1" href="dashboard.html">Go Back</a>
+                    <Link className="btn btn-light my-1" to="/dashboard">Go Back</Link>
                 </form>
             </section>
         </Fragment>

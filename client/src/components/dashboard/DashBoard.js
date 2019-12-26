@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
 import DashBoardAction from './DashBoardAction';
+import Education from './Education';
+import Experience from './Experience';
 
 const DashBoard = ({getCurrentProfile, auth: {user}, profile: {profile, loading}}) => {
     useEffect(() => {
@@ -17,7 +19,11 @@ const DashBoard = ({getCurrentProfile, auth: {user}, profile: {profile, loading}
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
             {profile !== null ? (
+                <Fragment>
                 <DashBoardAction />
+                <Experience experience={profile.experience} />
+                <Education education={profile.education} />
+                </Fragment>
             ):(
                 <Fragment>
                     <p>You have not yet setup a profile, please add some info</p>
